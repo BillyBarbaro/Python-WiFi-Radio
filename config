@@ -3,8 +3,8 @@
 # See manpage for a description of the config keys
 #
 # User
-user = YOUR_EMAIL_ADDRESS
-password = YOUR_PASSWORD
+user = 
+password = 
 # or
 #password_command = gpg --decrypt ~/password
 
@@ -36,14 +36,14 @@ act_volup = )
 
 # Misc
 #audio_quality = low
-autostart_station = 123456
+autostart_station = 27150660631087291331
 
 #event_command = /home/pi/.config/pianobar/scripts/eventcmd.sh
 #fifo = /home/pi/.config/pianobar/ctl
 #sort = quickmix_10_name_az
 #love_icon = [+]
 #ban_icon = [-]
-volume = -20
+volume = 5 
 
 # Format strings
 format_nowplaying_song = SONG: %t | %a | %l
