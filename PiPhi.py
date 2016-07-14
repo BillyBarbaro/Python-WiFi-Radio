@@ -23,17 +23,17 @@ from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
 
 
 # Constants:
-RGB_LCD      = False # Set to 'True' if using color backlit LCD
+RGB_LCD      = True # Set to 'True' if using color backlit LCD
 HALT_ON_EXIT = False # Set to 'True' to shut down system when exiting
-MAX_FPS      = 6 if RGB_LCD else 4 # Limit screen refresh rate for legibility
-VOL_MIN      = -20
-VOL_MAX      =  15
+MAX_FPS      = 3 if RGB_LCD else 4 # Limit screen refresh rate for legibility
+VOL_MIN      = 5 
+VOL_MAX      = 5
 VOL_DEFAULT  =   0
 HOLD_TIME    = 3.0 # Time (seconds) to hold select button for shut down
 PICKLEFILE   = '/home/pi/.config/pianobar/state.p'
 
 # Global state:
-volCur       = VOL_MIN     # Current volume
+volCur       = 5#VOL_MIN     # Current volume
 volNew       = VOL_DEFAULT # 'Next' volume after interactions
 volSpeed     = 1.0         # Speed of volume change (accelerates w/hold)
 volSet       = False       # True if currently setting volume
@@ -447,7 +447,7 @@ while pianobar.isalive():
             xStation = drawStations(stationNew, listTop, 0, staBtnTime)
         else:
             # Not in station menu
-            if volSet is False:
+            """if volSet is False:
                 # Just entering volume-setting mode; init display
                 lcd.setCursor(0, 1)
                 volCurI = int((volCur - VOL_MIN) + 0.5)
@@ -469,6 +469,16 @@ while pianobar.isalive():
                 if volNew < VOL_MIN: volNew = VOL_MIN
             volTime   = time.time() # Time of last volume button press
             volSpeed *= 1.15        # Accelerate volume change
+            """
+            lcd.setCursor(0,1)
+            if btnUp:
+                pianobar.send("+")
+                lcd.message("Thumbs Up       ")
+            else:
+                pianobar.send("-")
+                lcd.message("Thumbs Down     ")
+            volSet = True 
+            volTime = time.time()
 
     # Other logic specific to unpressed buttons:
     else:
@@ -481,7 +491,7 @@ while pianobar.isalive():
             volSpeed = 1.0 # Buttons released = reset volume speed
             # If no interaction in 4 seconds, return to prior state.
             # Volume bar will be erased by subsequent operations.
-            if (time.time() - volTime) >= 4:
+            if (time.time() - volTime) >= 2:
                 volSet = False
                 if paused: drawPaused()
 
@@ -504,7 +514,7 @@ while pianobar.isalive():
 
         # Draw lower line (volume or artist/album info):
         if volSet:
-            if volNewI != volCurI: # Draw only changes
+            """if volNewI != volCurI: # Draw only changes
                 if(volNewI > volCurI):
                     x = int(volCurI / 5)
                     n = int(volNewI / 5) - x
@@ -514,7 +524,7 @@ while pianobar.isalive():
                     n = int(volCurI / 5) - x
                     s = chr(volNewI % 5) + chr(0) * n
                 lcd.setCursor(x + 9, 1)
-                lcd.message(s)
+                lcd.message("Rating")"""
         elif paused == False:
             if (time.time() - playMsgTime) >= 3:
                 # Display artist/album (rather than 'Playing')
